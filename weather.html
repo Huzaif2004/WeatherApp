@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/weather.css">
+    <!-- <script src="js/weather.js"></script> -->
+    <style>
+        body{
+    background: #222;
+}
+.card
+{
+    
+        width: 90%;
+        
+        max-width: 470px;
+        
+        background: linear-gradient(135deg, #00feba, #5b548a);
+        
+        color: #fff;
+       
+        margin: 100px auto 0;
+        
+        border-radius: 20px;
+         padding: 40px 35px;
+        text-align: center;
+       
+}
+.search
+{
+
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.search input 
+{
+border:0;
+outline:0;
+padding:10px 25px;
+height:60px;
+border-radius: 30px;
+background: #ebfffc;
+flex:1;
+color:#555;
+margin-right:16px;
+font-size:18px;
+}
+button{
+    
+    border-radius:50%;
+    border:0;
+    height:60px;
+    width:60px;
+    outline:0;
+    background: grey;
+    color:white;
+    cursor:pointer;
+    
+}
+button:hover{
+    background: #7c7c7c6b;
+}
+.weather-icon{
+    width:150px;
+    margin-top: 30px;
+
+}
+.weather h1{
+    font-size: 70px;
+    font-weight: 500;
+}
+.weather h2{
+    font-size: 45px;
+    font-weight: 400;
+    margin-top: -10px;
+}
+.details
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:0 20px;
+    margin-top: 50px;
+}
+.col
+{
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+.col img{
+    width:50px;
+    margin-right: 10px;
+
+}
+.humidity, .wind
+{
+font-size: 24px;
+margin-top: -3px;
+}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="search" spellcheck="false">
+            <button><svg stroke="currentColor" fill="currentColor" class="btn" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em"
+                width="1.5em" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z">
+                </path>
+              </svg></button>
+        </div>
+        <div class="weather">
+            <img src="images/clear.png" class="pp">
+            <h1 class="temp">16°c</h1>
+            <h2 class="city">New York</h2>
+            
+            <div class="details">
+             <div class="col">
+                <img src="images/humidity.png" alt="">
+                <div><p class="humidity">60%</p>
+                <p>Humidity</p></div>
+             </div>
+             <div class="col">
+                <img src="images/wind.png" alt="">
+                <div><p class="wind">15 km/h</p>
+                <p>Wind Speed</p></div>
+             </div>
+            </div></div>
+        </div>
+    </div>
+    <script>
+        let city=document.querySelector(".search input");
+const btn=document.querySelector(".search button");
+const weatherIcon= document.querySelector("img.pp");
+const apiKey="58fbd609ab0d926dc75e5d1bf2eb936c";
+const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+async function checkweather(city)
+{
+    const response=await fetch(apiUrl + city + `&appid=${apiKey}`);
+    var data= await response.json();
+    console.log(data);
+    document.querySelector(".city").innerHTML=data.name;
+    document.querySelector(".temp").innerHTML=Math.round(data.main.temp)+"°c";
+    document.querySelector(".humidity").innerHTML=data.main.humidity+" %";
+    document.querySelector(".wind").innerHTML=data.wind.speed+" km/h";
+    if(data.weather[0].main == "Clouds")
+    {
+        weatherIcon.src = "images/clouds.png";
+        
+    }
+    else if(data.weather[0].main=="Clear")
+    {
+        weatherIcon.src="images/clear.png";
+    }
+    else if(data.weather[0].main=="Rain")
+    {
+        weatherIcon.src="images/rain.png";
+    }
+    else if(data.weather[0].main=="Drizzle")
+    {
+        weatherIcon.src="images/drizzle.png";
+    }
+    
+}
+btn.addEventListener("click",()=>{checkweather(city.value)});
+
+
+    </script>
+</body>
+</html>
